@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - LuxStream</title>
+  <link rel="stylesheet" href="auth.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Login</h1>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Contraseña" required />
+      <button type="submit">Entrar</button>
+    </form>
+    <p id="msg"></p>
+
+    <p>
+      ¿No tienes cuenta? 
+      <a href="register.html" class="switch-link">Regístrate aquí</a>
+    </p>
+    <p>
+      <a href="index.html" class="switch-link">⬅ Volver a LuxStream</a>
+    </p>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      const res = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+      const msg = document.getElementById('msg');
+      if (res.ok) {
+        sessionStorage.setItem('token', data.token);
+        msg.style.color = 'green';
+        msg.textContent = 'Login correcto. Ahora puedes usar las funciones de usuario.';
+        // Aquí podrías redirigir a index.html o a donde quieras, ejemplo:
+        // window.location.href = 'index.html';
+      } else {
+        msg.style.color = 'red';
+        msg.textContent = data.error || 'Error en login';
+      }
+    });
+  </script>
+</body>
+</html>

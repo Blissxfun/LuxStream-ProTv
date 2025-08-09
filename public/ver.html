@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ver Película</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="ver-pelicula">
+    <a href="index.html" class="volver">⬅ Volver</a>
+
+    <section class="detalle-pelicula">
+      <div class="poster">
+        <img id="imagen" alt="Poster película" />
+      </div>
+      <div class="info">
+        <h1 id="titulo"></h1>
+        <p id="descripcion"></p>
+
+        <ul class="datos-extra">
+          <li><strong>Año:</strong> <span id="ano"></span></li>
+          <li><strong>Duración:</strong> <span id="duracion"></span></li>
+          <li><strong>Clasificación:</strong> <span id="clasificacion"></span></li>
+          <li><strong>Idioma:</strong> <span id="idioma"></span></li>
+          <li><strong>Categoría:</strong> <span id="categoria"></span></li>
+          <li><strong>Director:</strong> <span id="director"></span></li>
+          <li><strong>Actores:</strong> <span id="actor"></span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="video-player-container">
+      <video id="videoPlayer" controls autoplay></video>
+    </section>
+  </main>
+
+  <script src="ver.js"></script>
+</body>
+</html>

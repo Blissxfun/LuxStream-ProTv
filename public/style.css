@@ -1,0 +1,392 @@
+/* Reset básico */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #f0f0f0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header fijo */
+header {
+  background: rgba(0, 216, 255, 0.18);
+  backdrop-filter: saturate(180%) blur(12px);
+  padding: 1.2rem 3rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  box-shadow: 0 2px 12px rgba(0, 216, 255, 0.3);
+  user-select: none;
+}
+
+/* Logo */
+header h1 {
+  margin: 0;
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #00d8ff;
+  letter-spacing: 2.5px;
+  text-shadow: 0 0 8px #00d8ff;
+}
+
+/* Buscador estilizado */
+input[type="search"] {
+  flex: 1;
+  max-width: 600px;
+  padding: 0.7rem 1.2rem;
+  font-size: 1.15rem;
+  border: none;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #e0e0e0;
+  box-shadow: inset 0 0 12px rgba(0, 216, 255, 0.7);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="search"]::placeholder {
+  color: #c0c0c0;
+  font-style: italic;
+  letter-spacing: 0.5px;
+}
+
+input[type="search"]:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 18px #00d8ff;
+}
+
+/* Contenedor para usuario (login/logout) */
+#user-info {
+  font-size: 1rem;
+  color: #00d8ff;
+  font-weight: 700;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Links del user-info */
+#user-info a {
+  color: #ff3c78;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+#user-info a:hover,
+#user-info a:focus {
+  color: #ff6699;
+  outline: none;
+}
+
+/* ---------- Botón favorito adaptado para que combine ----------- */
+.btn-fav {
+  background: #ff3c78;
+  color: white;
+  border-radius: 30px;
+  padding: 0.45rem 1rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(255, 60, 120, 0.6);
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.btn-fav:hover,
+.btn-fav:focus-visible {
+  background-color: #ff6699;
+  outline: none;
+  box-shadow: 0 0 15px #ff6699;
+}
+
+/* Main container */
+main {
+  flex-grow: 1;
+  padding: 2.5rem 3rem;
+  max-width: 1300px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Grid películas responsive */
+.grid {
+  display: grid;
+  gap: 1.8rem;
+
+  /* Usamos clamp para que columnas se ajusten con tamaño mínimo y máximo */
+  grid-template-columns: repeat(auto-fit, minmax(clamp(160px, 15vw, 220px), 1fr));
+  justify-content: center;
+}
+
+/* Tarjeta película */
+.pelicula {
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 216, 255, 0.25);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition:
+    transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  will-change: transform;
+}
+
+/* Subir y resaltar sombra al hover/focus */
+.pelicula:hover,
+.pelicula:focus-visible {
+  transform: translateY(-7px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(0, 216, 255, 0.5);
+  outline: none;
+}
+
+/* Imagen portada con aspect ratio 2:3 */
+.pelicula img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  display: block;
+  border-bottom: 2px solid rgba(0, 216, 255, 0.4);
+  transition: transform 0.4s ease;
+}
+
+.pelicula:hover img,
+.pelicula:focus-visible img {
+  transform: scale(1.06);
+}
+
+/* Info película */
+.pelicula-info {
+  padding: 0.8rem 1.2rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Título con sombra y recorte de texto */
+.pelicula-info h3 {
+  margin: 0 0 0.6rem 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #00e5ff;
+  text-shadow: 0 0 8px #00d8ff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Contenedor botones */
+.botones {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+/* Botones: redondos, grandes para TV y móvil */
+.botones button,
+.botones a {
+  flex: 1;
+  background: #00d8ff;
+  border: none;
+  padding: 0.5rem 0;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #121212;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 216, 255, 0.4);
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.2));
+}
+
+.botones button:hover,
+.botones a:hover,
+.botones button:focus-visible,
+.botones a:focus-visible {
+  background: #00a5cc;
+  color: #e0f7ff;
+  outline: none;
+  box-shadow: 0 0 12px #00d8ff;
+}
+
+/* Ajustes para móviles */
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem 1.5rem;
+  }
+
+  input[type="search"] {
+    max-width: 100%;
+    margin-top: 0.6rem;
+  }
+
+  main {
+    padding: 1.5rem 1rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .pelicula img {
+    aspect-ratio: 3 / 4;
+  }
+
+  .pelicula-info h3 {
+    font-size: 1rem;
+  }
+
+  .botones button,
+  .botones a {
+    font-size: 0.9rem;
+    padding: 0.4rem 0;
+  }
+}
+
+/* Ajustes para pantallas grandes tipo TV */
+@media (min-width: 1600px) {
+  header {
+    padding: 2rem 6rem;
+  }
+
+  main {
+    padding: 3rem 6rem;
+  }
+
+  .pelicula img {
+    aspect-ratio: 2 / 3;
+  }
+
+  .pelicula-info h3 {
+    font-size: 1.4rem;
+  }
+
+  .botones button,
+  .botones a {
+    font-size: 1.2rem;
+    padding: 0.7rem 0;
+  }
+}
+
+/* Estilos para ver.html */
+
+.ver-pelicula {
+  max-width: 1100px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+  color: #eee;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.volver {
+  display: inline-block;
+  margin-bottom: 1.8rem;
+  color: #ff3c78;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+.volver:hover {
+  color: #ff6699;
+}
+
+.detalle-pelicula {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+  align-items: flex-start;
+}
+
+/* Poster */
+.poster {
+  flex: 1 1 280px;
+  max-width: 280px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 30px rgba(0, 216, 255, 0.7);
+  background: #000;
+}
+
+.poster img {
+  width: 100%;
+  display: block;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+
+/* Info */
+.info {
+  flex: 2 1 600px;
+}
+
+.info h1 {
+  font-size: 2.8rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #00d8ff;
+  text-shadow: 0 0 10px #00a5cc;
+}
+
+.info p {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  margin-bottom: 1.8rem;
+  color: #ddd;
+}
+
+/* Lista datos extra */
+.datos-extra {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1rem;
+  color: #bbb;
+}
+
+.datos-extra li {
+  margin-bottom: 0.5rem;
+}
+
+.datos-extra strong {
+  color: #00d8ff;
+  font-weight: 700;
+}
+
+/* Video */
+.video-player-container {
+  max-width: 900px;
+  margin: 0 auto 3rem;
+}
+
+#videoPlayer {
+  width: 100%;
+  border-radius: 15px;
+  box-shadow: 0 4px 25px rgba(0, 216, 255, 0.7);
+  background: #000;
+}
