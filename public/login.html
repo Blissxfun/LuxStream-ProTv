@@ -28,7 +28,7 @@
     const form = document.getElementById('loginForm');
     form.addEventListener('submit', async e => {
       e.preventDefault();
-      const login = document.getElementById('login').value;
+      const login = document.getElementById('login').value.trim();
       const password = document.getElementById('password').value;
 
       const res = await fetch('/login', {
@@ -40,16 +40,20 @@
       const data = await res.json();
       const msg = document.getElementById('msg');
       if (res.ok) {
+        msg.classList.remove('error');
+        msg.classList.add('success');
         sessionStorage.setItem('token', data.token);
-        msg.style.color = 'green';
         msg.textContent = 'Login correcto. Ahora puedes usar las funciones de usuario.';
-        // Puedes redirigir si quieres
+        form.reset();
+        // Puedes redirigir si quieres, por ejemplo:
         // window.location.href = 'index.html';
       } else {
-        msg.style.color = 'red';
+        msg.classList.remove('success');
+        msg.classList.add('error');
         msg.textContent = data.error || 'Error en login';
       }
     });
   </script>
+
 </body>
 </html>

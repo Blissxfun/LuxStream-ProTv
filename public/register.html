@@ -29,8 +29,8 @@
     const form = document.getElementById('registerForm');
     form.addEventListener('submit', async e => {
       e.preventDefault();
-      const email = document.getElementById('email').value;
-      const username = document.getElementById('username').value;
+      const email = document.getElementById('email').value.trim();
+      const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value;
 
       const res = await fetch('/register', {
@@ -42,13 +42,17 @@
       const data = await res.json();
       const msg = document.getElementById('msg');
       if (res.ok) {
-        msg.style.color = 'green';
+        msg.classList.remove('error');
+        msg.classList.add('success');
         msg.textContent = data.message + ' — Ahora ve a login.html para entrar.';
+        form.reset();
       } else {
-        msg.style.color = 'red';
+        msg.classList.remove('success');
+        msg.classList.add('error');
         msg.textContent = data.error || 'Error en registro';
       }
     });
   </script>
+
 </body>
 </html>

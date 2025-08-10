@@ -7,6 +7,8 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
@@ -19,6 +21,11 @@ body {
   max-width: 400px;
   text-align: center;
   user-select: none;
+  transition: box-shadow 0.3s ease;
+}
+
+.container:hover {
+  box-shadow: 0 16px 40px rgba(0, 216, 255, 0.4);
 }
 
 h1 {
@@ -26,7 +33,8 @@ h1 {
   font-size: 2.8rem;
   font-weight: 900;
   color: #00d8ff;
-  text-shadow: 0 0 10px #00a5cc;
+  text-shadow: 0 0 12px #00a5cc;
+  user-select: none;
 }
 
 form {
@@ -35,7 +43,7 @@ form {
   gap: 1.4rem;
 }
 
-/* Añadimos input tipo text para username */
+/* Inputs comunes para email, texto y password */
 input[type="email"],
 input[type="password"],
 input[type="text"] {
@@ -46,15 +54,16 @@ input[type="text"] {
   background: rgba(255, 255, 255, 0.15);
   color: #e0e0e0;
   box-shadow: inset 0 0 12px rgba(0, 216, 255, 0.7);
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+  transition: background 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+  caret-color: #00d8ff;
 }
 
-/* Placeholder para todos los inputs */
 input[type="email"]::placeholder,
 input[type="password"]::placeholder,
 input[type="text"]::placeholder {
-  color: #c0c0c0;
+  color: #b0b0b0;
   font-style: italic;
+  transition: color 0.3s ease;
 }
 
 input[type="email"]:focus,
@@ -62,7 +71,14 @@ input[type="password"]:focus,
 input[type="text"]:focus {
   outline: none;
   background: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 0 18px #00d8ff;
+  box-shadow: 0 0 20px #00d8ff;
+  color: #fff;
+}
+
+input[type="email"]:focus::placeholder,
+input[type="password"]:focus::placeholder,
+input[type="text"]:focus::placeholder {
+  color: transparent;
 }
 
 button {
@@ -76,7 +92,7 @@ button {
   cursor: pointer;
   user-select: none;
   box-shadow: 0 6px 20px rgba(0, 216, 255, 0.45);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
 }
 
 button:hover,
@@ -84,18 +100,53 @@ button:focus-visible {
   background: #00a5cc;
   box-shadow: 0 8px 28px rgba(0, 165, 204, 0.7);
   outline: none;
+  transform: translateY(-2px);
 }
 
+button:disabled {
+  cursor: not-allowed;
+  background: #338ea8;
+  box-shadow: none;
+  transform: none;
+  color: #ddd;
+}
+
+/* Mensajes de error y éxito */
 #msg {
   margin-top: 1.3rem;
-  min-height: 1.4rem;
+  min-height: 1.6rem;
   font-weight: 700;
+  font-size: 1rem;
+  padding: 0.6rem 1rem;
+  border-radius: 12px;
+  user-select: none;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+#msg.success {
+  background-color: #daf5dc;
+  color: #27632a;
+  border: 1.5px solid #2a7f2a;
+  box-shadow: 0 0 12px #3ab53a8a;
+}
+
+#msg.error {
+  background-color: #f7d6d6;
+  color: #a12727;
+  border: 1.5px solid #b32a2a;
+  box-shadow: 0 0 12px #d13a3a8a;
 }
 
 p {
   margin-top: 2rem;
   font-size: 1rem;
   color: #bbb;
+  user-select: none;
 }
 
 .switch-link {
