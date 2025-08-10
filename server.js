@@ -87,41 +87,86 @@ app.get('/stream/:id', async (req, res) => {
   }
 });
 
+// --- Función para validar username ---
+function validarUsername(username) {
+  const usernameValido = /^[a-zA-Z0-9_]{3,20}$/;
+  return usernameValido.test(username);
+}
+
 // --- Autenticación y manejo de usuarios ---
+
+// Validar datos comunes para registro
+function validarDatosRegistro({ email, username, password }) {
+  if (!email || !username || !password) return false;
+  if (typeof email !== 'string' || typeof username !== 'string' || typeof password !== 'string') return false;
+  if (username.length < 3) return false; // mínimo 3 caracteres para username
+  if (password.length < 6) return false; // mínimo 6 caracteres para password
+  if (!validarUsername(username)) return false;
+  return true;
+}
 
 // Registrar usuario
 app.post('/register', async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) return res.status(400).json({ error: 'Faltan datos' });
+  const { email, username, password } = req.body;
+
+  if (!validarDatosRegistro({ email, username, password })) {
+    return res.status(400).json({ error: 'Datos inválidos o incompletos. Username: 3-20 caracteres, solo letras, números y guión bajo. Password mínimo 6 caracteres.' });
+  }
 
   const users = await leerJSON(usersPath);
 
   if (users.find(u => u.email === email)) {
-    return res.status(400).json({ error: 'Usuario ya existe' });
+    return res.status(400).json({ error: 'El email ya está registrado' });
+  }
+
+  if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) {
+    return res.status(400).json({ error: 'El nombre de usuario ya está en uso' });
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
-  const newUser = { id: Date.now().toString(), email, passwordHash };
+  const newUser = {
+    id: Date.now().toString(),
+    email,
+    username,
+    passwordHash,
+  };
+
   users.push(newUser);
   await escribirJSON(usersPath, users);
 
-  res.json({ message: 'Usuario registrado con éxito' });
+  res.json({ success: true, message: 'Usuario registrado correctamente' });
 });
 
-// Login usuario
+// Login usuario con email o username
 app.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) return res.status(400).json({ error: 'Faltan datos' });
+  const { login, password } = req.body; 
+  // "login" puede ser email o username para hacer flexible
+
+  if (!login || !password) {
+    return res.status(400).json({ error: 'Faltan datos' });
+  }
 
   const users = await leerJSON(usersPath);
-  const user = users.find(u => u.email === email);
-  if (!user) return res.status(400).json({ error: 'Usuario no encontrado' });
+
+  // Buscar usuario por email o username (case insensitive para username)
+  const user = users.find(
+    u =>
+      u.email.toLowerCase() === login.toLowerCase() ||
+      u.username.toLowerCase() === login.toLowerCase()
+  );
+
+  if (!user) {
+    return res.status(400).json({ error: 'Usuario no encontrado' });
+  }
 
   const validPass = await bcrypt.compare(password, user.passwordHash);
-  if (!validPass) return res.status(400).json({ error: 'Contraseña incorrecta' });
+  if (!validPass) {
+    return res.status(400).json({ error: 'Contraseña incorrecta' });
+  }
 
-  const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
-  res.json({ token });
+  const token = jwt.sign({ id: user.id, email: user.email, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
+
+  res.json({ success: true, token, username: user.username });
 });
 
 // Middleware para proteger rutas con token
@@ -187,13 +232,23 @@ async function guardarProgresos(progresos) {
   await fs.writeFile(path.join(process.cwd(), 'data', 'progresos.json'), JSON.stringify(progresos, null, 2));
 }
 
+// Función para validar token y extraer userId (faltaba en tu código)
+function validarTokenYObtenerUserId(token) {
+  try {
+    const payload = jwt.verify(token, JWT_SECRET);
+    return payload.id;
+  } catch {
+    return null;
+  }
+}
+
 // Endpoint para guardar el progreso del video
 app.post('/progreso', async (req, res) => {
   try {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) return res.status(401).json({ error: 'No autorizado' });
 
-    const userId = validarTokenYObtenerUserId(token); // Aquí debes tener tu función para extraer userId del token
+    const userId = validarTokenYObtenerUserId(token);
     if (!userId) return res.status(401).json({ error: 'Token inválido' });
 
     const { idPelicula, tiempo } = req.body;

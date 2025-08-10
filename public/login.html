@@ -9,7 +9,7 @@
   <div class="container">
     <h1>Login</h1>
     <form id="loginForm">
-      <input type="email" id="email" placeholder="Email" required />
+      <input type="text" id="login" placeholder="Email o Nombre de usuario" required />
       <input type="password" id="password" placeholder="Contraseña" required />
       <button type="submit">Entrar</button>
     </form>
@@ -28,13 +28,13 @@
     const form = document.getElementById('loginForm');
     form.addEventListener('submit', async e => {
       e.preventDefault();
-      const email = document.getElementById('email').value;
+      const login = document.getElementById('login').value;
       const password = document.getElementById('password').value;
 
       const res = await fetch('/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ login, password }),
       });
 
       const data = await res.json();
@@ -43,7 +43,7 @@
         sessionStorage.setItem('token', data.token);
         msg.style.color = 'green';
         msg.textContent = 'Login correcto. Ahora puedes usar las funciones de usuario.';
-        // Aquí podrías redirigir a index.html o a donde quieras, ejemplo:
+        // Puedes redirigir si quieres
         // window.location.href = 'index.html';
       } else {
         msg.style.color = 'red';

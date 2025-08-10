@@ -1,3 +1,7 @@
+const API_URL = window.location.hostname.includes("localhost") 
+  ? "http://localhost:3000" 
+  : "https://luxstream-protv.onrender.com";
+
 let peliculas = [];
 
 // Función para cargar favoritos del usuario logueado (si hay token)
@@ -6,7 +10,7 @@ async function cargarFavoritos() {
   if (!token) return [];
 
   try {
-    const res = await fetch('/favoritos', {
+    const res = await fetch(`${API_URL}/favoritos`, {
       headers: { 'Authorization': 'Bearer ' + token }
     });
     if (!res.ok) return [];
@@ -76,7 +80,7 @@ async function mostrarPeliculas(lista) {
         const idPelicula = btn.getAttribute('data-id');
 
         try {
-          const res = await fetch('/favoritos', {
+          const res = await fetch(`${API_URL}/favoritos`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -102,7 +106,7 @@ async function mostrarPeliculas(lista) {
 }
 
 // Cargar películas desde la API y mostrar
-fetch('/api/peliculas')
+fetch(`${API_URL}/api/peliculas`)
   .then(res => res.json())
   .then(data => {
     peliculas = data;

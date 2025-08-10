@@ -1,5 +1,3 @@
-/* auth.css */
-
 body {
   margin: 0;
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
@@ -37,8 +35,10 @@ form {
   gap: 1.4rem;
 }
 
+/* Añadimos input tipo text para username */
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+input[type="text"] {
   padding: 0.9rem 1.2rem;
   font-size: 1.1rem;
   border: none;
@@ -49,14 +49,17 @@ input[type="password"] {
   transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Placeholder para todos los inputs */
 input[type="email"]::placeholder,
-input[type="password"]::placeholder {
+input[type="password"]::placeholder,
+input[type="text"]::placeholder {
   color: #c0c0c0;
   font-style: italic;
 }
 
 input[type="email"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+input[type="text"]:focus {
   outline: none;
   background: rgba(255, 255, 255, 0.3);
   box-shadow: 0 0 18px #00d8ff;
@@ -121,7 +124,8 @@ p {
   }
 
   input[type="email"],
-  input[type="password"] {
+  input[type="password"],
+  input[type="text"] {
     font-size: 1rem;
   }
 

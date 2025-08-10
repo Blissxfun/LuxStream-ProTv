@@ -10,6 +10,7 @@
     <h1>Registro</h1>
     <form id="registerForm">
       <input type="email" id="email" placeholder="Email" required />
+      <input type="text" id="username" placeholder="Nombre de usuario (3-20 caracteres)" required />
       <input type="password" id="password" placeholder="Contraseña" required />
       <button type="submit">Registrar</button>
     </form>
@@ -29,12 +30,13 @@
     form.addEventListener('submit', async e => {
       e.preventDefault();
       const email = document.getElementById('email').value;
+      const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
 
       const res = await fetch('/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, username, password }),
       });
 
       const data = await res.json();
